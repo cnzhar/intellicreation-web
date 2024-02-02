@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main>
+    <b-overlay :show="show" rounded="sm">
       <div class="container">
         <section
           class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
@@ -17,11 +17,7 @@
                       <p class="text-center small">请输入用户名和密码</p>
                     </div>
 
-                    <form
-                      @submit.prevent="submitForm"
-                      class="row g-3 needs-validation"
-                      novalidate
-                    >
+                    <form class="row g-3 needs-validation" novalidate>
                       <div class="col-12">
                         <label for="yourUsername" class="form-label"
                           >账号</label
@@ -69,7 +65,11 @@
                         </div>
                       </div>
                       <div class="col-12">
-                        <button class="btn btn-primary w-100" type="submit">
+                        <button
+                          @click.prevent="submitForm()"
+                          class="btn btn-primary w-100"
+                          type="submit"
+                        >
                           登录
                         </button>
                       </div>
@@ -86,18 +86,19 @@
           </div>
         </section>
       </div>
-    </main>
-    <!-- End #main -->
+    </b-overlay>
   </div>
 </template>
 
 <script>
 import { login } from "@/api/login";
 import { setToken } from "@/utils/auth";
+
 export default {
   name: "Login-index",
   data() {
     return {
+      show: false,
       member: {
         uid: "",
         password: "",
@@ -106,32 +107,35 @@ export default {
   },
   methods: {
     submitForm() {
-      // 1. 获取表单数据
       const member = this.member;
-      // 3. 提交表单请求登录
-      // this.$toast.loading({
-      //   message: "登录中...",
-      //   forbidClick: true, // 禁用背景点击
-      //   duration: 500, // 持续时间，默认 2000，0 表示持续展示不关闭
-      // });
-      try {
-        const res = login(member);
-        console.log(res);
-        if (res.data.token) {
-          setToken(res.data.token);
-        }
-
-        if (res.code === 200) {
-          // this.$toast.success("登录成功");
-          this.$router.push("/home");
-        } else {
-          // this.$toast.success(res.message);
-        }
-        console.log("res", res);
-      } catch (err) {
-        // this.$toast.fail("登录失败，请稍后重试");
-      }
-      // 4. 根据请求响应结果处理后续操作
+      this.show = true;
+      login(member)
+        .then((response) => {
+          console.log(response);
+          if (response.data.data.token) {
+            setToken(response.data.data.token);
+          }
+          if (response.data.code === 200) {
+            this.$bvToast.toast("登录成功", {
+              title: "系统消息",
+              autoHideDelay: 5000,
+            });
+            // this.$router.push("/home");
+          } else {
+            this.$bvToast.toast(response.message, {
+              title: "系统消息",
+              autoHideDelay: 5000,
+            });
+          }
+          this.show = false;
+        })
+        .catch((error) => {
+          this.$bvToast.toast(error.message, {
+            title: "系统消息",
+            autoHideDelay: 5000,
+          });
+          this.show = false;
+        });
     },
   },
 };

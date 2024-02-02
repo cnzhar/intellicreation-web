@@ -6,7 +6,7 @@ export function articleList(query) {
     method: "get",
     url: "/article/articleList",
     headers: {
-      isToken: false,
+      isToken: true,
     },
     params: query,
   });
@@ -18,7 +18,7 @@ export function hotArticleList() {
     method: "get",
     url: "/article/hotArticleList",
     headers: {
-      isToken: false,
+      isToken: true,
     },
   });
 }
@@ -28,7 +28,7 @@ export function getArticle(articleId) {
   return request({
     url: "/article/" + articleId,
     headers: {
-      isToken: false,
+      isToken: true,
     },
     method: "get",
   });

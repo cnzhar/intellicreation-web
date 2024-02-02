@@ -1,7 +1,8 @@
 import axios from "axios";
-import { Message } from "element-ui";
 import { getToken } from "@/utils/auth";
 import errorCode from "@/utils/errorCode";
+
+axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 
 // create an axios instance
 const service = axios.create({
@@ -10,15 +11,15 @@ const service = axios.create({
   timeout: 15000, // request timeout
 });
 
-// Add a request interceptor
-axios.interceptors.request.use(
+// request interceptor
+service.interceptors.request.use(
   function (config) {
     // Do something before request is sent
     // 是否需要设置 token
     const isToken = (config.headers || {}).isToken === false;
     // do something before request is sent
     if (getToken() && !isToken) {
-      config.headers.token = getToken();
+      config.headers["Authorization"] = getToken();
     }
     // get请求映射params参数
     if (config.method === "get" && config.params) {
@@ -52,124 +53,44 @@ axios.interceptors.request.use(
   }
 );
 
-// Add a response interceptor
-axios.interceptors.response.use(
+// response interceptor
+service.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    return response;
+    // 未设置状态码则默认成功状态
+    const code = response.data.code || 200;
+    // 获取错误信息
+    const msg = errorCode[code] || response.data.msg || errorCode["default"];
+    if (code === 401) {
+      return Promise.reject("无效的会话，或会话已过期，请重新登录");
+    } else if (code === 500) {
+      return Promise.reject(new Error(msg));
+    } else if (code !== 200) {
+      return Promise.reject("error");
+    } else {
+      // 把 字符串total 转换成 数字total
+      if (response.data.data && response.data.data.total) {
+        response.data.data.total = parseInt(response.data.data.total);
+      }
+      return response;
+    }
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error);
-  }
-);
+    let message;
+    let errorMessage = error.message || ""; // 确保 errorMessage 是一个字符串
 
-// // response interceptor
-// service.interceptors.response.use(
-//   (response) => {
-//     const res = response.data;
-//
-//     if (res.code !== 200) {
-//       Message({
-//         message: res.message,
-//         type: "error",
-//         duration: 3 * 1000,
-//       });
-//
-//       // 401:未登录;
-//       // if (res.code === 401) {
-//       //   MessageBox.confirm(
-//       //     "你已被登出，可以取消继续留在该页面，或者重新登录",
-//       //     "确定登出",
-//       //     {
-//       //       confirmButtonText: "重新登录",
-//       //       cancelButtonText: "取消",
-//       //       type: "warning",
-//       //     }
-//       //   ).then(() => {
-//       //     store.dispatch("FedLogOut").then(() => {
-//       //       location.reload(); // 为了重新实例化vue-router对象 避免bug
-//       //     });
-//       //   });
-//       // }
-//       return Promise.reject(new Error(res.msg || "Error"));
-//     } else {
-//       return res;
-//     }
-//   },
-//   (error) => {
-//     console.log("err" + error); // for debug
-//     Message({
-//       message: error.message,
-//       type: "error",
-//       duration: 3 * 1000,
-//     });
-//     return Promise.reject(error);
-//   }
-// );
-
-// response拦截器
-service.interceptors.response.use(
-  (res) => {
-    // 未设置状态码则默认成功状态
-    const code = res.data.code || 200;
-    // 获取错误信息
-    const msg = errorCode[code] || res.data.msg || errorCode["default"];
-    if (code === 401) {
-      // MessageBox.confirm(
-      //   "登录状态已过期，您可以继续留在该页面，或者重新登录",
-      //   "系统提示",
-      //   {
-      //     confirmButtonText: "重新登录",
-      //     cancelButtonText: "取消",
-      //     type: "warning",
-      //   }
-      // )
-      //   .then(() => {
-      //     // localStorage.setItem("logUrl", router.currentRoute.fullPath);
-      //     // router.push({
-      //     //   path: "/Login?login=1",
-      //     // });
-      //   })
-      //   .catch(() => {});
-      // return Promise.reject("无效的会话，或者会话已过期，请重新登录。");
-    } else if (code === 500) {
-      Message({
-        message: msg,
-        type: "error",
-      });
-      return Promise.reject(new Error(msg));
-    } else if (code !== 200) {
-      Notification.error({
-        title: msg,
-      });
-      return Promise.reject("error");
-    } else {
-      // 把字符串total 转换成 数字 total
-      if (res.data.data && res.data.data.total) {
-        res.data.data.total = parseInt(res.data.data.total);
-      }
-      return res.data.data;
-    }
-  },
-  (error) => {
-    console.log("err" + error);
-    let { message } = error;
-    if (message === "Network Error") {
+    if (errorMessage === "Network Error") {
       message = "后端接口连接异常";
-    } else if (message.includes("timeout")) {
+    } else if (errorMessage.includes("timeout")) {
       message = "系统接口请求超时";
-    } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常";
+    } else if (errorMessage.includes("Request failed with status code")) {
+      message =
+        "系统接口" + errorMessage.substr(errorMessage.length - 3) + "异常";
     }
-    Message({
-      message: message,
-      type: "error",
-      duration: 5 * 1000,
-    });
-    return Promise.reject(error);
+    return Promise.reject(message);
   }
 );
 

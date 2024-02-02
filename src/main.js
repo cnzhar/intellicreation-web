@@ -1,15 +1,29 @@
 import Vue from "vue";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
 import axios from "axios";
 
-import "element-ui/lib/theme-chalk/index.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+import PortalVue from "portal-vue";
+
+import MavonEditor from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+
+// global css
+import "@/styles/index.scss";
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
+
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(PortalVue);
+
+Vue.use(MavonEditor);
 
 new Vue({
   router,

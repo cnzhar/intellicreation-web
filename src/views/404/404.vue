@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <div>
+    <h1>404</h1>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "MineArea-Mine",
+  name: "error-404",
 };
 </script>
 

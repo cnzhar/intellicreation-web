@@ -11,3 +11,14 @@ export function login(member) {
     data: member,
   });
 }
+
+// 登录方法
+export function logout() {
+  return request({
+    url: "/logout",
+    headers: {
+      isToken: true,
+    },
+    method: "post",
+  });
+}

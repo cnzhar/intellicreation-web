@@ -1,0 +1,24 @@
+body {
+  background: aliceblue;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+.main-content-wrapper {
+  max-width: 80vw;
+  margin: 4.5rem auto 0;
+  display: flex;
+}
+
+.plain-button.btn,
+.plain-button.btn:hover,
+.plain-button.btn:focus {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: blue !important;
+  padding: 0 !important;
+}
+
