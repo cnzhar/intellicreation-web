@@ -1,6 +1,13 @@
 import request from "@/utils/request";
 
-// 新增用户
+// *==================================================*
+// *--------------------- Member ---------------------*
+// *==================================================*
+/**
+ * 新增用户
+ * @param member
+ * @returns {*}
+ */
 export function addMember(member) {
   return request({
     method: "post",
@@ -12,7 +19,11 @@ export function addMember(member) {
   });
 }
 
-// 删除用户
+/**
+ * 删除用户
+ * @param memberId
+ * @returns {*}
+ */
 export function deleteMember(memberId) {
   return request({
     method: "delete",
@@ -23,7 +34,11 @@ export function deleteMember(memberId) {
   });
 }
 
-// 更新用户信息
+/**
+ * 更新用户信息
+ * @param member
+ * @returns {*}
+ */
 export function updateMember(member) {
   return request({
     method: "put",
@@ -35,7 +50,11 @@ export function updateMember(member) {
   });
 }
 
-// 查询用户列表
+/**
+ * 查询用户列表
+ * @param query
+ * @returns {*}
+ */
 export function memberList(query) {
   return request({
     method: "get",
@@ -47,7 +66,11 @@ export function memberList(query) {
   });
 }
 
-// 查看用户详情
+/**
+ * 查看用户详情
+ * @param memberId
+ * @returns {*}
+ */
 export function getMember(memberId) {
   return request({
     method: "get",
@@ -58,7 +81,11 @@ export function getMember(memberId) {
   });
 }
 
-// 获取某个用户拥有的全部角色
+/**
+ * 获取某个用户拥有的全部角色
+ * @param query
+ * @returns {*}
+ */
 export function getRolesByMember(query) {
   return request({
     method: "get",
@@ -70,7 +97,11 @@ export function getRolesByMember(query) {
   });
 }
 
-// 查询用户登录日志列表
+/**
+ * 查询用户登录日志列表
+ * @param query
+ * @returns {*}
+ */
 export function getMemberLoginLogList(query) {
   return request({
     method: "get",
@@ -82,7 +113,14 @@ export function getMemberLoginLogList(query) {
   });
 }
 
-// 新增菜单
+// *==================================================*
+// *---------------------- Menu ----------------------*
+// *==================================================*
+/**
+ * 新增菜单
+ * @param menu
+ * @returns {*}
+ */
 export function addMenu(menu) {
   return request({
     method: "post",
@@ -94,7 +132,11 @@ export function addMenu(menu) {
   });
 }
 
-// 删除菜单
+/**
+ * 删除菜单
+ * @param menuId
+ * @returns {*}
+ */
 export function deleteMenu(menuId) {
   return request({
     method: "delete",
@@ -105,7 +147,11 @@ export function deleteMenu(menuId) {
   });
 }
 
-// 编辑菜单
+/**
+ * 编辑菜单
+ * @param menu
+ * @returns {*}
+ */
 export function updateMenu(menu) {
   return request({
     method: "put",
@@ -117,7 +163,11 @@ export function updateMenu(menu) {
   });
 }
 
-// 查询菜单列表
+/**
+ * 查询菜单列表
+ * @param query
+ * @returns {*}
+ */
 export function menuList(query) {
   return request({
     method: "get",
@@ -129,7 +179,11 @@ export function menuList(query) {
   });
 }
 
-// 查看菜单详情
+/**
+ * 查看菜单详情
+ * @param memberId
+ * @returns {*}
+ */
 export function getMenu(memberId) {
   return request({
     method: "get",
@@ -140,7 +194,14 @@ export function getMenu(memberId) {
   });
 }
 
-// 新增权限
+// *==================================================*
+// *------------------- Permission -------------------*
+// *==================================================*
+/**
+ * 新增权限
+ * @param permission
+ * @returns {*}
+ */
 export function addPermission(permission) {
   return request({
     method: "post",
@@ -152,7 +213,11 @@ export function addPermission(permission) {
   });
 }
 
-// 删除权限
+/**
+ * 删除权限
+ * @param permissionId
+ * @returns {*}
+ */
 export function deletePermission(permissionId) {
   return request({
     method: "delete",
@@ -163,7 +228,11 @@ export function deletePermission(permissionId) {
   });
 }
 
-// 编辑权限
+/**
+ * 编辑权限
+ * @param permission
+ * @returns {*}
+ */
 export function updatePermission(permission) {
   return request({
     method: "put",
@@ -175,7 +244,11 @@ export function updatePermission(permission) {
   });
 }
 
-// 查询权限列表
+/**
+ * 查询权限列表
+ * @param query
+ * @returns {*}
+ */
 export function permissionList(query) {
   return request({
     method: "get",
@@ -187,7 +260,11 @@ export function permissionList(query) {
   });
 }
 
-// 查看权限详情
+/**
+ * 查看权限详情
+ * @param permissionId
+ * @returns {*}
+ */
 export function getPermission(permissionId) {
   return request({
     method: "get",
@@ -198,7 +275,11 @@ export function getPermission(permissionId) {
   });
 }
 
-// 获取拥有某个权限的全部角色
+/**
+ * 获取拥有某个权限的全部角色
+ * @param query
+ * @returns {*}
+ */
 export function getRolesByPermission(query) {
   return request({
     method: "get",
@@ -210,7 +291,14 @@ export function getRolesByPermission(query) {
   });
 }
 
-// 新增角色
+// *==================================================*
+// *---------------------- Role ----------------------*
+// *==================================================*
+/**
+ * 新增角色
+ * @param role
+ * @returns {*}
+ */
 export function addRole(role) {
   return request({
     method: "post",
@@ -222,7 +310,11 @@ export function addRole(role) {
   });
 }
 
-// 删除角色
+/**
+ * 删除角色
+ * @param roleId
+ * @returns {*}
+ */
 export function deleteRole(roleId) {
   return request({
     method: "delete",
@@ -233,7 +325,11 @@ export function deleteRole(roleId) {
   });
 }
 
-// 编辑角色
+/**
+ * 编辑角色
+ * @param role
+ * @returns {*}
+ */
 export function updateRole(role) {
   return request({
     method: "put",
@@ -245,7 +341,11 @@ export function updateRole(role) {
   });
 }
 
-// 查询角色列表
+/**
+ * 查询角色列表
+ * @param query
+ * @returns {*}
+ */
 export function roleList(query) {
   return request({
     method: "get",
@@ -257,7 +357,11 @@ export function roleList(query) {
   });
 }
 
-// 查看角色详情
+/**
+ * 查看角色详情
+ * @param roleId
+ * @returns {*}
+ */
 export function getRole(roleId) {
   return request({
     method: "get",
@@ -268,7 +372,11 @@ export function getRole(roleId) {
   });
 }
 
-// 获取某个角色所拥有的全部权限
+/**
+ * 获取某个角色所拥有的全部权限
+ * @param query
+ * @returns {*}
+ */
 export function getPermissionListByRole(query) {
   return request({
     method: "get",
@@ -280,7 +388,11 @@ export function getPermissionListByRole(query) {
   });
 }
 
-// 获取拥有某个角色的全部用户
+/**
+ * 获取拥有某个角色的全部用户
+ * @param query
+ * @returns {*}
+ */
 export function getMemberListByRole(query) {
   return request({
     method: "get",

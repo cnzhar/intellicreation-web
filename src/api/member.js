@@ -1,6 +1,10 @@
 import request from "@/utils/request";
 
-// 登录方法
+/**
+ * 登录方法
+ * @param member
+ * @returns {*}
+ */
 export function login(member) {
   return request({
     method: "post",
@@ -12,7 +16,10 @@ export function login(member) {
   });
 }
 
-// 登录方法
+/**
+ * 登录方法
+ * @returns {*}
+ */
 export function logout() {
   return request({
     method: "post",
@@ -23,7 +30,11 @@ export function logout() {
   });
 }
 
-// 注册方法
+/**
+ * 注册方法
+ * @param member
+ * @returns {*}
+ */
 export function register(member) {
   return request({
     method: "post",
@@ -35,7 +46,10 @@ export function register(member) {
   });
 }
 
-// 查询菜单
+/**
+ * 查询菜单
+ * @returns {*}
+ */
 export function routerList() {
   return request({
     method: "get",

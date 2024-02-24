@@ -1,6 +1,10 @@
 ﻿import request from "@/utils/request";
 
-// 查询文章列表
+/**
+ * 查询文章列表
+ * @param query
+ * @returns {*}
+ */
 export function articleList(query) {
   return request({
     method: "get",
@@ -12,7 +16,10 @@ export function articleList(query) {
   });
 }
 
-// 查询最热文章
+/**
+ * 查询最热文章
+ * @returns {*}
+ */
 export function hotArticleList() {
   return request({
     method: "get",
@@ -23,7 +30,11 @@ export function hotArticleList() {
   });
 }
 
-// 获取文章详情
+/**
+ * 获取文章详情
+ * @param articleId
+ * @returns {*}
+ */
 export function getArticle(articleId) {
   return request({
     method: "get",
@@ -44,7 +55,11 @@ export function getArticle(articleId) {
 //   });
 // }
 
-// 新增一篇文章
+/**
+ * 新增一篇文章
+ * @param article
+ * @returns {*}
+ */
 export function addArticle(article) {
   return request({
     method: "post",
