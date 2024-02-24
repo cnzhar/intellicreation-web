@@ -1,41 +1,70 @@
 <template>
   <div class="main-content-wrapper">
     <div class="left-div">
-      <div
-        class="card article-list-card shadow"
-        v-for="(item, index) in articleList"
-        :key="'article' + index"
-      >
-        <div class="card-body">
+      <b-skeleton-wrapper :loading="skeletonLoading">
+        <template #loading>
+          <b-card class="article-list-card">
+            <b-skeleton width="85%"></b-skeleton>
+            <b-skeleton width="55%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+          </b-card>
+          <b-card class="article-list-card">
+            <b-skeleton width="85%"></b-skeleton>
+            <b-skeleton width="55%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+          </b-card>
+          <b-card class="article-list-card">
+            <b-skeleton width="85%"></b-skeleton>
+            <b-skeleton width="55%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+          </b-card>
+        </template>
+
+        <b-card
+          class="article-list-card shadow"
+          v-for="(item, index) in articleList"
+          :key="'article' + index"
+        >
           <a :href="'/read/DetailArticle?aid=' + item.id" class="card-link">
             <h5 class="card-title">{{ item.title }}</h5>
           </a>
           <h6 class="card-subtitle mb-2 text-muted">{{ item.summary }}</h6>
-          <p class="card-text">{{ item.title }}</p>
           <a :href="'/read/DetailArticle?aid=' + item.id" class="card-link"
             >查看详情</a
           >
-        </div>
-      </div>
+        </b-card>
+      </b-skeleton-wrapper>
     </div>
 
     <div class="right-div">
-      <div class="card">
-        <div class="card-header">热门文章</div>
-        <ul class="list-group list-group-flush">
-          <li
-            v-for="(item, index) in browseList"
-            :key="'browseList' + index"
-            class="list-group-item"
-          >
-            <a target="_blank">
-              {{ item.title }}
-            </a>
-            <b-icon icon="eye"></b-icon>
-            {{ item.viewCount }}
-          </li>
-        </ul>
-      </div>
+      <b-skeleton-wrapper :loading="skeletonLoading">
+        <template #loading>
+          <b-card>
+            <b-skeleton width="85%"></b-skeleton>
+            <b-skeleton width="55%"></b-skeleton>
+            <b-skeleton width="70%"></b-skeleton>
+          </b-card>
+        </template>
+        <b-card class="shadow">
+          <div class="card-header">热门文章</div>
+          <ul class="list-group list-group-flush">
+            <li
+              v-for="(item, index) in browseList"
+              :key="'browseList' + index"
+              class="list-group-item"
+            >
+              <a target="_blank">
+                {{ item.title }}
+              </a>
+              <b-icon icon="eye"></b-icon>
+              {{ item.viewCount }}
+            </li>
+          </ul>
+        </b-card>
+      </b-skeleton-wrapper>
     </div>
   </div>
 </template>
@@ -47,6 +76,7 @@ export default {
   name: "read-index",
   data() {
     return {
+      skeletonLoading: false,
       articleList: [],
       // 查询参数
       queryParams: {
@@ -61,16 +91,11 @@ export default {
   methods: {
     // 获取文章列表
     getArticleList() {
+      this.skeletonLoading = true;
       articleList(this.queryParams)
         .then((response) => {
           this.articleList = this.articleList.concat(response.data.data.rows);
-          console.log(this.articleList);
-          if (response.total <= this.articleList.length) {
-            this.hasMore = false;
-          } else {
-            this.hasMore = true;
-            this.queryParams.pageNum++;
-          }
+          this.skeletonLoading = false;
         })
         .catch((error) => {
           this.$bvToast.toast(error, {

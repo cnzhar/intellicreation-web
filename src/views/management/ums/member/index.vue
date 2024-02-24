@@ -1,115 +1,118 @@
 <template>
   <div>
-    <b-form-group label="筛选">
-      <label>id</label>
-      <b-form-input
-        v-model="memberQueryParam.id"
-        id="feedback-user"
-      ></b-form-input>
-      <label>uid</label>
-      <b-form-input
-        v-model="memberQueryParam.uid"
-        id="feedback-user"
-      ></b-form-input>
-      <label>昵称</label>
-      <b-form-input
-        v-model="memberQueryParam.nickname"
-        id="feedback-user"
-      ></b-form-input>
-      <b-button @click="getMemberList" variant="success">查询</b-button>
-      <b-button @click="handleReset" variant="danger">重置</b-button>
-    </b-form-group>
-    <b-button @click="handleAddNew" variant="primary">新增</b-button>
-    <b-table striped hover :items="memberList" :fields="fields" :busy="isBusy">
-      <template #table-busy>
-        <div class="text-center text-danger my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong> 加载中... </strong>
-        </div>
-      </template>
-      <template #cell(actions)="data">
-        <b-button
-          class="plain-button"
-          @click="handleView(data.item)"
-          variant="primary"
-          >查看</b-button
-        >
-        <b-button
-          class="plain-button"
-          @click="handleEdit(data.item)"
-          variant="primary"
-          >修改</b-button
-        >
-      </template>
-    </b-table>
+    <b-card class="shadow managementCard-body">
+      <b-form-group label="筛选">
+        <b-row class="my-1">
+          <b-col sm="3">
+            <label>id</label>
+            <b-form-input
+              v-model="memberQueryParam.id"
+              id="feedback-user"
+            ></b-form-input>
+          </b-col>
+          <b-col sm="3">
+            <label>UID</label>
+            <b-form-input
+              v-model="memberQueryParam.uid"
+              id="feedback-user"
+            ></b-form-input>
+          </b-col>
+          <b-col sm="3">
+            <label>昵称</label>
+            <b-form-input
+              v-model="memberQueryParam.nickname"
+              id="feedback-user"
+            ></b-form-input>
+          </b-col>
+          <b-col sm="3">
+            <b-button @click="getMemberList" variant="success">查询</b-button>
+            <b-button @click="handleReset" variant="danger">重置</b-button>
+          </b-col>
+        </b-row>
+      </b-form-group>
+    </b-card>
+    <b-card class="shadow managementCard-body mt-3">
+      <b-button @click="handleAddNew" variant="primary">新增</b-button>
+      <b-table
+        hover
+        class="mt-2"
+        :items="memberList"
+        :fields="fields"
+        :busy="isBusy"
+      >
+        <template #table-busy>
+          <div class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong> 加载中... </strong>
+          </div>
+        </template>
+        <template #cell(actions)="data">
+          <b-button class="plain-button" @click="handleView(data.item)"
+            ><b-icon icon="eye" variant="primary"></b-icon
+          ></b-button>
+          <b-button class="plain-button" @click="handleEdit(data.item)"
+            ><b-icon icon="pencil-square" variant="primary"></b-icon
+          ></b-button>
+          <b-button class="plain-button" @click="handleSet(data.item)"
+            ><b-icon icon="gear" variant="primary"></b-icon
+          ></b-button>
+          <b-button class="plain-button" @click="handleDelete(data.item)"
+            ><b-icon icon="trash" variant="primary"></b-icon
+          ></b-button>
+        </template>
+      </b-table>
+      <b-row class="my-1">
+        <b-col sm="2">
+          <b-form-select
+            v-model="memberQueryParam.pageSize"
+            :options="pageSizeOptions"
+            @change="handlePageSizeChange"
+          ></b-form-select>
+        </b-col>
+        <b-col sm="7" class="ms-auto"></b-col>
+        <b-col sm="3" class="ms-auto">
+          <b-pagination
+            v-model="memberQueryParam.pageNum"
+            :total-rows="totalRows"
+            :per-page="memberQueryParam.pageSize"
+            @change="handlePageNumChange"
+            aria-controls="my-table"
+          ></b-pagination>
+        </b-col>
+      </b-row>
+    </b-card>
     <AddNewMemberModal ref="addNewMemberModalRef"></AddNewMemberModal>
-    <MemberDetailModal ref="memberDetailModalRef"></MemberDetailModal>
     <EditMemberModal ref="editMemberModalRef"></EditMemberModal>
-    <ViewMemberModal ref="viewMemberDetailModalRef"></ViewMemberModal>
+    <SetMemberModal ref="setMemberModalRef"></SetMemberModal>
+    <DeleteMemberConfirmModal
+      ref="deleteMemberConfirmModalRef"
+    ></DeleteMemberConfirmModal>
   </div>
 </template>
 
 <script>
-import { memberList } from "@/api/admin";
+import {
+  getDefaultData,
+  memberMethods,
+} from "@/views/management/ums/member/useMember";
 import AddNewMemberModal from "@/views/management/ums/member/components/AddNewMemberModal";
-import ViewMemberModal from "@/views/management/ums/member/components/ViewMemberModal";
 import EditMemberModal from "@/views/management/ums/member/components/EditMemberModal";
+import SetMemberModal from "@/views/management/ums/member/components/SetMemberModal";
+import DeleteMemberConfirmModal from "@/views/management/ums/member/components/DeleteMemberConfirmModal";
 
 export default {
   name: "member-index",
   data() {
-    return {
-      isShowAddNew: false,
-      memberQueryParam: {
-        id: null,
-        uid: null,
-        nickname: null,
-      },
-      memberList: [],
-      fields: [
-        { key: "id", label: "ID" },
-        { key: "uid", label: "uid" },
-        { key: "nickname", label: "昵称" },
-        { key: "actions", label: "操作" },
-      ],
-      isBusy: false,
-    };
+    return getDefaultData();
   },
   components: {
     AddNewMemberModal,
-    ViewMemberModal,
     EditMemberModal,
+    SetMemberModal,
+    DeleteMemberConfirmModal,
   },
   methods: {
-    handleAddNew() {
-      this.$refs.addNewMemberModalRef.showModalMethod();
-    },
-    getMemberList() {
-      this.isBusy = true;
-      memberList(this.memberQueryParam)
-        .then((response) => {
-          this.memberList = response.data.data.rows;
-          this.isBusy = false;
-        })
-        .catch((error) => {
-          this.$bvToast.toast("查询用户列表失败！错误信息：" + error, {
-            title: "系统消息",
-            autoHideDelay: 5000,
-          });
-        });
-    },
-    handleReset() {
-      this.memberQueryParam.id = null;
-      this.memberQueryParam.uid = null;
-      this.memberQueryParam.nickname = null;
-      this.getMemberList();
-    },
-    handleView(item) {
-      this.$refs.viewMemberDetailModalRef.showModalMethod(item.id);
-    },
-    handleEdit(item) {
-      this.$refs.editMemberModalRef.showModalMethod(item.id);
-    },
+    ...memberMethods,
   },
   created() {
     this.getMemberList();

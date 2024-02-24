@@ -26,11 +26,11 @@ export function hotArticleList() {
 // 获取文章详情
 export function getArticle(articleId) {
   return request({
+    method: "get",
     url: "/article/" + articleId,
     headers: {
       isToken: true,
     },
-    method: "get",
   });
 }
 
@@ -43,3 +43,15 @@ export function getArticle(articleId) {
 //     method: "put",
 //   });
 // }
+
+// 新增一篇文章
+export function addArticle(article) {
+  return request({
+    method: "post",
+    url: "/article/addArticle",
+    headers: {
+      isToken: true,
+    },
+    data: article,
+  });
+}

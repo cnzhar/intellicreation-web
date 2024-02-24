@@ -1,4 +1,4 @@
-import LayoutVertical from "@/views/layout/LayoutVertical";
+import LayoutHorizontal from "@/views/layout/LayoutHorizontal";
 
 export default [
   {
@@ -8,7 +8,7 @@ export default [
   },
   {
     path: "/",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/home",
     name: "home",
     children: [
@@ -21,7 +21,7 @@ export default [
   },
   {
     path: "/home",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/home",
     name: "home",
     children: [
@@ -34,7 +34,7 @@ export default [
   },
   {
     path: "/creation",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/creation/index",
     name: "/creation",
     children: [
@@ -47,7 +47,7 @@ export default [
   },
   {
     path: "/read",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/read/index",
     name: "read",
     children: [
@@ -60,13 +60,13 @@ export default [
       {
         path: "DetailArticle",
         name: "DetailArticle",
-        component: () => import("@/views/read/DetailArticle"),
+        component: () => import("@/views/read/ArticleDetail"),
       },
     ],
   },
   {
     path: "/community",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/community/index",
     name: "community",
     children: [
@@ -79,7 +79,7 @@ export default [
   },
   {
     path: "/mine",
-    component: LayoutVertical,
+    component: LayoutHorizontal,
     redirect: "/mine/index",
     name: "mine",
     children: [

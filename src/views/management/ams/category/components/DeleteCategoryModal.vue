@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <h1>后台数据</h1>
-  </div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "dashboard-index",
+  name: "DeleteCategoryModal",
 };
 </script>
 

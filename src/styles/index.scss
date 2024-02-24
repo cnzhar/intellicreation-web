@@ -1,5 +1,8 @@
+@import "./color.scss";
+@import "./transition";
+
 body {
-  background: aliceblue;
+  background: #f7f9fa;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -22,3 +25,11 @@ body {
   padding: 0 !important;
 }
 
+.managementCard-body {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.no-background {
+  background-color: transparent;
+}

@@ -1,9 +1,10 @@
 <template>
   <div class="main-content-wrapper">
+    <label @click="goBack">返回</label>
     <div class="card mx-auto">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted">{{ detailObj.content }}</h6>
-        <p class="card-text">{{ detailObj.content }}</p>
+        <b class="text-primary" variant="primary">{{ detailObj.title }}</b>
+        <div class="markdown-body" v-html="detailObj.content"></div>
         <a href="#" class="card-link">Card link</a>
         <a href="#" class="card-link">Another link</a>
       </div>
@@ -14,8 +15,10 @@
 <script>
 import { getArticle } from "@/api/article.js";
 import { mavonEditor } from "mavon-editor";
+import router from "@/router";
+
 export default {
-  name: "DetailArticle",
+  name: "ArticleDetail",
   data() {
     return {
       aid: "", //文章ID
@@ -23,15 +26,19 @@ export default {
     };
   },
   methods: {
+    goBack() {
+      router.go(-1);
+    },
     getArticleDetail() {
       this.aid =
         this.$route.query.aid === undefined
           ? 1
           : parseInt(this.$route.query.aid); //获取传参的aid
       getArticle(this.aid).then((response) => {
-        this.detailObj = response;
-        const markdownIt = mavonEditor.getMarkdownIt();
-        this.detailObj.content = markdownIt.render(response.data.data.content);
+        this.detailObj = response.data.data;
+        this.detailObj.content = mavonEditor
+          .getMarkdownIt()
+          .render(this.detailObj.content);
       });
     },
   },

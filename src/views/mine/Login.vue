@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { login } from "@/api/login";
+import { login } from "@/api/member";
 import { setToken } from "@/utils/auth";
 
 export default {

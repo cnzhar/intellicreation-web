@@ -1,5 +1,12 @@
 <template>
   <div class="headerBar-main-div shadow">
+    <b-progress
+      v-show="showProgress"
+      :value="progress"
+      height="4px"
+      variant="success"
+      class="progress-fixed-top"
+    ></b-progress>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand class="start-element" href="#"
         >智能创作系统</b-navbar-brand
@@ -9,11 +16,13 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item :active="true" href="/home">首页</b-nav-item>
-          <b-nav-item href="/creation">创作中心</b-nav-item>
-          <b-nav-item href="/read">阅读</b-nav-item>
-          <b-nav-item href="/community">圈子</b-nav-item>
-          <b-nav-item href="/dashboard">后台</b-nav-item>
+          <b-nav-item
+            v-for="item in currentNavItems"
+            :key="item.path"
+            :active="selectedNavItem.startsWith(item.path)"
+            :to="item.path"
+            >{{ item.navName }}</b-nav-item
+          >
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -28,13 +37,6 @@
               >Search
             </b-button>
           </b-nav-form>
-
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">ES</b-dropdown-item>
-            <b-dropdown-item href="#">RU</b-dropdown-item>
-            <b-dropdown-item href="#">FA</b-dropdown-item>
-          </b-nav-item-dropdown>
 
           <b-avatar
             v-if="!isLogged"
@@ -57,27 +59,39 @@
           >
           </b-avatar>
           <b-popover target="popover-target-1" triggers="hover" placement="top">
-            <b-button @click="handleLogout" variant="danger">个人中心</b-button>
+            <b-button @click="goToProfilePage" variant="danger"
+              >个人中心</b-button
+            >
             <b-button @click="handleLogout" variant="danger">登出</b-button>
           </b-popover>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <b-modal v-model="isShowLogin" hide-footer hide-header>
-      <loginModal></loginModal>
-    </b-modal>
+    <loginModal ref="loginModalRef"></loginModal>
   </div>
 </template>
 
 <script>
 import { getToken, removeToken } from "@/utils/auth";
-import { logout } from "@/api/login";
+import { logout } from "@/api/member";
 import loginModal from "@/components/loginModal";
 
 export default {
   name: "HeaderBar",
   data() {
     return {
+      // 进度值
+      progress: 0,
+      // 是否显示进度条
+      showProgress: false,
+      selectedNavItem: "",
+      currentNavItems: [
+        { navName: "首页", path: "/home" },
+        { navName: "创作中心", path: "/creation" },
+        { navName: "阅读", path: "/read" },
+        { navName: "圈子", path: "/community" },
+        { navName: "后台", path: "/admin" },
+      ],
       isLogged: false,
       isShowLogin: false,
     };
@@ -86,6 +100,26 @@ export default {
     loginModal,
   },
   methods: {
+    startLoading() {
+      this.showProgress = true;
+      this.progress = 0;
+      const interval = setInterval(() => {
+        // 模拟加载进度
+        if (this.progress >= 100) {
+          clearInterval(interval);
+          this.finishLoading();
+        } else {
+          this.progress += 50;
+        }
+      }, 1);
+    },
+    finishLoading() {
+      // 加载完成
+      this.progress = 100;
+      setTimeout(() => {
+        this.showProgress = false;
+      }, 200);
+    },
     goToProfilePage() {
       if (this.$route.path !== "/mine/index") {
         this.$router.push("/mine/index");
@@ -95,7 +129,7 @@ export default {
       this.isLogged = !!getToken();
     },
     handleLogin() {
-      this.isShowLogin = true;
+      this.$refs.loginModalRef.showModalMethod();
     },
     handleLogout() {
       logout()
@@ -114,14 +148,34 @@ export default {
           });
         });
     },
+    setActive() {
+      this.selectedNavItem = window.location.pathname;
+    },
+  },
+  watch: {
+    // 监听$route对象
+    $route() {
+      this.setActive();
+      this.startLoading();
+    },
   },
   created() {
     this.getIsLogged();
+    this.setActive();
+  },
+  mounted() {
+    this.startLoading();
   },
 };
 </script>
 
 <style scoped>
+.progress-fixed-top {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
 .headerBar-main-div {
   position: fixed;
   top: 0;
