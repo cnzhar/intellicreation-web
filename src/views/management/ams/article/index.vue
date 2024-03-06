@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <b-form-group label="筛选">
         <b-row class="my-1">
           <b-col sm="3">
@@ -31,12 +31,11 @@
         </b-row>
       </b-form-group>
     </b-card>
-    <b-card class="shadow managementCard-body mt-3">
-      <b-button @click="handleAddNew" variant="primary">新增</b-button>
+    <b-card class="shadow mt-3">
       <b-table
         hover
         class="mt-2"
-        :items="tagList"
+        :items="articleList"
         :fields="fields"
         :busy="isBusy"
       >
@@ -67,7 +66,7 @@
       <b-row class="my-1">
         <b-col sm="2">
           <b-form-select
-            v-model="pageSize"
+            v-model="articleQueryParam.pageSize"
             :options="pageSizeOptions"
             @change="handlePageSizeChange"
           ></b-form-select>
@@ -75,9 +74,9 @@
         <b-col sm="7" class="ms-auto"></b-col>
         <b-col sm="3" class="ms-auto">
           <b-pagination
-            v-model="pageNum"
+            v-model="articleQueryParam.pageNum"
             :total-rows="totalRows"
-            :per-page="pageSize"
+            :per-page="articleQueryParam.pageSize"
             @change="handlePageNumChange"
             aria-controls="my-table"
           ></b-pagination>
@@ -88,28 +87,21 @@
 </template>
 
 <script>
+import {
+  getDefaultData,
+  articleMethods,
+} from "@/views/management/ams/article/useArticle";
+
 export default {
   name: "article-index",
   data() {
-    return {
-      articleQueryParam: {
-        id: null,
-        menuName: null,
-        path: null,
-      },
-      articleList: [],
-      fields: [],
-      isBusy: false,
-      pageSizeOptions: [
-        { value: 5, text: "每页5条" },
-        { value: 10, text: "每页10条" },
-        { value: 15, text: "每页15条" },
-        { value: 30, text: "每页30条" },
-      ],
-      pageNum: 1,
-      totalRows: 0,
-      pageSize: 5,
-    };
+    return getDefaultData();
+  },
+  methods: {
+    ...articleMethods,
+  },
+  created() {
+    this.getArticleList();
   },
 };
 </script>

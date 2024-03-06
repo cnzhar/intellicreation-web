@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body mt-3">
+    <b-card class="shadow mt-3">
       <h4>用户登录日志</h4>
       <b-table
         hover

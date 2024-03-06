@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body mt-3">
+    <b-card class="shadow mt-3">
       <h4>该用户所拥有的角色</h4>
       <b-table
         hover

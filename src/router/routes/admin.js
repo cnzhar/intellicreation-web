@@ -177,6 +177,20 @@ export default [
         },
       },
       {
+        path: "articleDetail",
+        name: "articleDetail",
+        component: () =>
+          import("@/views/management/ams/article/ViewArticleDetail"),
+        meta: {
+          breadcrumb: [
+            { text: "首页", to: { name: "admin" }, active: false },
+            { text: "文章", to: { name: "article" }, active: false },
+            { text: "文章管理", to: { name: "article" }, active: false },
+            { text: "文章详情", active: true },
+          ],
+        },
+      },
+      {
         path: "category",
         name: "category",
         component: () => import("@/views/management/ams/category/index"),
@@ -185,6 +199,20 @@ export default [
             { text: "首页", to: { name: "admin" }, active: false },
             { text: "文章", to: { name: "article" }, active: false },
             { text: "分类管理", active: true },
+          ],
+        },
+      },
+      {
+        path: "categoryDetail",
+        name: "categoryDetail",
+        component: () =>
+          import("@/views/management/ams/category/ViewCategoryDetail"),
+        meta: {
+          breadcrumb: [
+            { text: "首页", to: { name: "admin" }, active: false },
+            { text: "文章", to: { name: "article" }, active: false },
+            { text: "分类管理", to: { name: "article" }, active: false },
+            { text: "分类详情", active: true },
           ],
         },
       },

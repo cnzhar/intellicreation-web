@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <b-form-group label="筛选">
         <b-row class="my-1">
           <b-col sm="3">
@@ -31,12 +31,12 @@
         </b-row>
       </b-form-group>
     </b-card>
-    <b-card class="shadow managementCard-body mt-3">
+    <b-card class="shadow mt-3">
       <b-button @click="handleAddNew" variant="primary">新增</b-button>
       <b-table
         hover
         class="mt-2"
-        :items="tagList"
+        :items="categoryList"
         :fields="fields"
         :busy="isBusy"
       >
@@ -67,7 +67,7 @@
       <b-row class="my-1">
         <b-col sm="2">
           <b-form-select
-            v-model="pageSize"
+            v-model="categoryQueryParam.pageSize"
             :options="pageSizeOptions"
             @change="handlePageSizeChange"
           ></b-form-select>
@@ -75,9 +75,9 @@
         <b-col sm="7" class="ms-auto"></b-col>
         <b-col sm="3" class="ms-auto">
           <b-pagination
-            v-model="pageNum"
+            v-model="categoryQueryParam.pageNum"
             :total-rows="totalRows"
-            :per-page="pageSize"
+            :per-page="categoryQueryParam.pageSize"
             @change="handlePageNumChange"
             aria-controls="my-table"
           ></b-pagination>
@@ -88,12 +88,21 @@
 </template>
 
 <script>
-import { getDefaultData } from "@/views/management/ams/category/useCategory";
+import {
+  getDefaultData,
+  categoryMethods,
+} from "@/views/management/ams/category/useCategory";
 
 export default {
   name: "category-index",
   data() {
     return getDefaultData();
+  },
+  methods: {
+    ...categoryMethods,
+  },
+  created() {
+    this.getCategoryList();
   },
 };
 </script>

@@ -1,40 +1,30 @@
 <template>
-  <div>
-    <div
-      class="d-flex flex-column flex-shrink-0 p-3 bg-light shadow"
-      style="height: 100vh"
-    >
-      <div class="start-element"></div>
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li v-for="(item, index) in currentMenuList" :key="'menu' + index">
-          <a
-            href="#"
-            v-b-toggle="'collapse-' + index"
-            class="nav-link link-dark"
-          >
-            <b-icon :icon="item.icon" aria-hidden="true"></b-icon>
-            {{ item.menuName }}
-          </a>
-          <b-collapse
-            v-for="(childItem, childIndex) in item.children"
-            :key="'childMenu' + childIndex"
-            :id="'collapse-' + index"
-            class="mt-2"
-          >
-            <ul>
-              <li class="nav-item">
-                <b-nav-item
-                  :to="childItem.path"
-                  :active="selectedNavItem.startsWith(childItem.path)"
-                >
-                  {{ childItem.menuName }}
-                </b-nav-item>
-              </li>
-            </ul>
-          </b-collapse>
-        </li>
-      </ul>
-    </div>
+  <div class="sidebar-main">
+    <ul class="nav nav-pills flex-column">
+      <li v-for="(item, index) in currentMenuList" :key="'menu' + index">
+        <a href="#" v-b-toggle="'collapse-' + index" class="nav-link link-dark">
+          <b-icon :icon="item.icon" aria-hidden="true"></b-icon>
+          {{ item.menuName }}
+        </a>
+        <b-collapse
+          v-for="(childItem, childIndex) in item.children"
+          :key="'childMenu' + childIndex"
+          :id="'collapse-' + index"
+          class="mt-2"
+        >
+          <ul>
+            <li class="nav-item">
+              <b-nav-item
+                :to="childItem.path"
+                :active="selectedNavItem.startsWith(childItem.path)"
+              >
+                {{ childItem.menuName }}
+              </b-nav-item>
+            </li>
+          </ul>
+        </b-collapse>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -79,12 +69,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.start-element {
-  margin-top: 3.5rem;
-}
-
-.active {
-  background: #42b983;
-}
-</style>
+<style scoped></style>

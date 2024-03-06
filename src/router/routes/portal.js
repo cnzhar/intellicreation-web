@@ -1,11 +1,7 @@
 import LayoutHorizontal from "@/views/layout/LayoutHorizontal";
+import LayoutCategory from "@/views/layout/LayoutCategory";
 
 export default [
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/mine/Login"),
-  },
   {
     path: "/",
     component: LayoutHorizontal,
@@ -33,19 +29,6 @@ export default [
     ],
   },
   {
-    path: "/creation",
-    component: LayoutHorizontal,
-    redirect: "/creation/index",
-    name: "/creation",
-    children: [
-      {
-        path: "index",
-        name: "/creation-index",
-        component: () => import("@/views/creation"),
-      },
-    ],
-  },
-  {
     path: "/read",
     component: LayoutHorizontal,
     redirect: "/read/index",
@@ -65,28 +48,15 @@ export default [
     ],
   },
   {
-    path: "/community",
-    component: LayoutHorizontal,
-    redirect: "/community/index",
-    name: "community",
+    path: "/CategoryRead",
+    component: LayoutCategory,
+    redirect: "/CategoryRead/index",
+    name: "CategoryRead",
     children: [
       {
         path: "index",
-        name: "community-index",
-        component: () => import("@/views/community"),
-      },
-    ],
-  },
-  {
-    path: "/mine",
-    component: LayoutHorizontal,
-    redirect: "/mine/index",
-    name: "mine",
-    children: [
-      {
-        path: "index",
-        name: "mine-index",
-        component: () => import("@/views/mine"),
+        name: "CategoryRead-index",
+        component: () => import("@/views/CategoryRead"),
       },
     ],
   },

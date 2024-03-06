@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <b-form-group label="筛选">
         <b-row class="my-1">
           <b-col sm="3">
@@ -31,7 +31,7 @@
         </b-row>
       </b-form-group>
     </b-card>
-    <b-card class="shadow managementCard-body mt-3">
+    <b-card class="shadow mt-3">
       <b-button @click="handleAddNew" variant="primary">新增</b-button>
       <b-table
         hover
@@ -93,38 +93,15 @@
 </template>
 
 <script>
+import { getDefaultData, tagMethods } from "@/views/management/ams/tag/useTag";
 import AddNewTagModal from "@/views/management/ams/tag/components/AddNewTagModal";
 import EditTagModal from "@/views/management/ams/tag/components/EditTagModal";
 import DeleteTagConfirmModal from "@/views/management/ams/tag/components/DeleteTagConfirmModal";
-import { tagList } from "@/api/ams";
 
 export default {
   name: "tag-index",
   data() {
-    return {
-      tagQueryParam: {
-        id: null,
-        name: null,
-        remark: null,
-        pageNum: 1,
-        pageSize: 5,
-      },
-      tagList: [],
-      fields: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "标签名" },
-        { key: "description", label: "描述" },
-        { key: "actions", label: "操作" },
-      ],
-      isBusy: false,
-      pageSizeOptions: [
-        { value: 5, text: "每页5条" },
-        { value: 10, text: "每页10条" },
-        { value: 15, text: "每页15条" },
-        { value: 30, text: "每页30条" },
-      ],
-      totalRows: 0,
-    };
+    return getDefaultData();
   },
   components: {
     AddNewTagModal,
@@ -132,42 +109,7 @@ export default {
     DeleteTagConfirmModal,
   },
   methods: {
-    getTagList() {
-      this.isBusy = true;
-      tagList(this.tagQueryParam)
-        .then((response) => {
-          this.tagList = response.data.data.rows;
-          this.totalRows = response.data.data.total;
-          this.isBusy = false;
-        })
-        .catch((error) => {
-          this.$bvToast.toast("查询标签列表失败！错误信息：" + error, {
-            title: "系统消息",
-            autoHideDelay: 5000,
-          });
-        });
-    },
-    handlePageSizeChange(pageSize) {
-      this.tagQueryParam.pageSize = pageSize;
-      this.getTagList();
-    },
-    handlePageNumChange(pageNum) {
-      this.tagQueryParam.pageNum = pageNum;
-      this.getTagList();
-    },
-    handleAddNew() {
-      this.$refs.addNewTagModalRef.showModalMethod();
-      this.getMemberList();
-    },
-    handleView(item) {
-      this.$router.push("/admin/ams/tagDetail?tid=" + item.id);
-    },
-    handleEdit(item) {
-      this.$refs.editTagModalRef.showModalMethod(item.id);
-    },
-    handleDelete(item) {
-      this.$refs.deleteTagConfirmModalRef.showModalMethod(item.id);
-    },
+    ...tagMethods,
   },
   created() {
     this.getTagList();

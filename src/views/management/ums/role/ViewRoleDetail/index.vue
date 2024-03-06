@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <h4>角色基本信息</h4>
       <b-container fluid>
         <b-row

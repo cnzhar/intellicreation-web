@@ -40,7 +40,7 @@ export default {
     return getDefaultData();
   },
   methods: {
-    memberMethods,
+    ...memberMethods,
   },
 };
 </script>

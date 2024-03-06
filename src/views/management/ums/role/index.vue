@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <b-form-group label="筛选">
         <b-row class="my-1">
           <b-col sm="3">
@@ -31,7 +31,7 @@
         </b-row>
       </b-form-group>
     </b-card>
-    <b-card class="shadow managementCard-body mt-3">
+    <b-card class="shadow mt-3">
       <b-button @click="handleAddNew" variant="primary">新增</b-button>
       <b-table
         hover

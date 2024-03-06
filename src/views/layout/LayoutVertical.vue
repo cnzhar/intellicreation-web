@@ -2,11 +2,11 @@
   <div>
     <HeaderBar></HeaderBar>
     <div class="parent">
-      <div class="left-child">
+      <b-card class="shadow left-child side-card">
         <SideBar></SideBar>
-      </div>
+      </b-card>
       <div class="right-child">
-        <b-breadcrumb class="no-background">
+        <b-breadcrumb class="no-background right-body p-0 mb-2">
           <transition-group name="breadcrumb" class="d-flex">
             <b-breadcrumb-item
               v-for="(item, index) in breadCrumbItems"
@@ -17,8 +17,9 @@
             >
           </transition-group>
         </b-breadcrumb>
-
-        <router-view />
+        <div class="right-body">
+          <router-view />
+        </div>
       </div>
     </div>
   </div>
@@ -62,13 +63,28 @@ export default {
 }
 
 .left-child {
-  flex: 0 0 16%;
-  height: 100%;
+  flex: 0 0 20%;
+  position: fixed;
+  top: 50%;
+  transform: translate(10%, calc(-50% + 1.5rem));
+  width: 15%;
+  height: 90vh;
+  overflow-y: auto; /* 垂直滚动条 */
+}
+
+/* 隐藏左侧滚动条 */
+.left-child::-webkit-scrollbar {
+  display: none;
 }
 
 .right-child {
-  flex: 0 0 84%;
-  margin-top: 3.5rem;
-  overflow-x: hidden;
+  flex: 1; /* 右侧内容占据剩余宽度 */
+  margin-top: 4.5rem;
+  margin-left: 16%; /* 留出左侧导航栏的宽度 */
+}
+
+.right-body {
+  width: 96%;
+  margin: 0 auto;
 }
 </style>

@@ -15,6 +15,10 @@ body {
   display: flex;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
 .plain-button.btn,
 .plain-button.btn:hover,
 .plain-button.btn:focus {
@@ -25,11 +29,11 @@ body {
   padding: 0 !important;
 }
 
-.managementCard-body {
-  width: 95%;
-  margin: 0 auto;
-}
-
 .no-background {
   background-color: transparent;
+}
+
+// 鼠标指针显示为可点击的手型
+.pointer {
+  cursor: pointer;
 }

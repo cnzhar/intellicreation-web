@@ -8,9 +8,7 @@
       class="progress-fixed-top"
     ></b-progress>
     <b-navbar toggleable="lg" type="dark" variant="primary">
-      <b-navbar-brand class="start-element" href="#"
-        >智能创作系统</b-navbar-brand
-      >
+      <b-navbar-brand href="#">智能创作系统</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -36,6 +34,12 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit"
               >Search
             </b-button>
+            <b-button class="plain-button" @click="handleDelete(data.item)"
+              ><b-icon icon="bell" variant="danger"></b-icon
+            ></b-button>
+            <b-button class="plain-button" @click="handleDelete(data.item)"
+              ><b-icon icon="envelope" variant="danger"></b-icon
+            ></b-button>
           </b-nav-form>
 
           <b-avatar
@@ -44,7 +48,7 @@
             @click="handleLogin"
             variant="danger"
             text="登录"
-            class="align-baseline end-element"
+            class="align-baseline"
           ></b-avatar>
           <b-avatar
             v-if="isLogged"
@@ -55,14 +59,37 @@
             @click="goToProfilePage"
             variant="danger"
             text="FF"
-            class="align-baseline end-element"
+            :src="currentMineNavInfo.avatar"
+            class="align-baseline"
           >
           </b-avatar>
-          <b-popover target="popover-target-1" triggers="hover" placement="top">
-            <b-button @click="goToProfilePage" variant="danger"
+          <b-popover
+            ref="popover"
+            target="popover-target-1"
+            triggers="hover"
+            placement="top"
+          >
+            <b-avatar
+              @click="goToProfilePage"
+              variant="danger"
+              text="FF"
+              :src="currentMineNavInfo.avatar"
+              class="align-baseline pop-card-item"
+            >
+            </b-avatar>
+            <span>{{ currentMineNavInfo.nickname }}</span>
+            <b-button
+              @click="goToProfilePage"
+              variant="danger"
+              class="pop-card-item"
               >个人中心</b-button
             >
-            <b-button @click="handleLogout" variant="danger">登出</b-button>
+            <b-button
+              @click="handleLogout"
+              variant="danger"
+              class="pop-card-item"
+              >登出</b-button
+            >
           </b-popover>
         </b-navbar-nav>
       </b-collapse>
@@ -72,85 +99,22 @@
 </template>
 
 <script>
-import { getToken, removeToken } from "@/utils/auth";
-import { logout } from "@/api/member";
 import loginModal from "@/components/loginModal";
+import {
+  getDefaultData,
+  headerBarMethods,
+} from "@/views/layout/components/useHeaderBar";
 
 export default {
   name: "HeaderBar",
   data() {
-    return {
-      // 进度值
-      progress: 0,
-      // 是否显示进度条
-      showProgress: false,
-      selectedNavItem: "",
-      currentNavItems: [
-        { navName: "首页", path: "/home" },
-        { navName: "创作中心", path: "/creation" },
-        { navName: "阅读", path: "/read" },
-        { navName: "圈子", path: "/community" },
-        { navName: "后台", path: "/admin" },
-      ],
-      isLogged: false,
-      isShowLogin: false,
-    };
+    return getDefaultData();
   },
   components: {
     loginModal,
   },
   methods: {
-    startLoading() {
-      this.showProgress = true;
-      this.progress = 0;
-      const interval = setInterval(() => {
-        // 模拟加载进度
-        if (this.progress >= 100) {
-          clearInterval(interval);
-          this.finishLoading();
-        } else {
-          this.progress += 50;
-        }
-      }, 1);
-    },
-    finishLoading() {
-      // 加载完成
-      this.progress = 100;
-      setTimeout(() => {
-        this.showProgress = false;
-      }, 200);
-    },
-    goToProfilePage() {
-      if (this.$route.path !== "/mine/index") {
-        this.$router.push("/mine/index");
-      }
-    },
-    getIsLogged() {
-      this.isLogged = !!getToken();
-    },
-    handleLogin() {
-      this.$refs.loginModalRef.showModalMethod();
-    },
-    handleLogout() {
-      logout()
-        .then(() => {
-          removeToken();
-          this.$bvToast.toast("登出成功", {
-            title: "系统消息",
-            autoHideDelay: 5000,
-          });
-          this.getIsLogged();
-        })
-        .catch((error) => {
-          this.$bvToast.toast("登出失败！错误信息：" + error, {
-            title: "系统消息",
-            autoHideDelay: 5000,
-          });
-        });
-    },
-    setActive() {
-      this.selectedNavItem = window.location.pathname;
-    },
+    ...headerBarMethods,
   },
   watch: {
     // 监听$route对象
@@ -162,6 +126,7 @@ export default {
   created() {
     this.getIsLogged();
     this.setActive();
+    this.getMineNavInfo();
   },
   mounted() {
     this.startLoading();
@@ -183,11 +148,8 @@ export default {
   z-index: 999;
 }
 
-.start-element {
-  margin-left: 5vw;
-}
-
-.end-element {
-  margin-right: 5vw;
+.pop-card-item {
+  display: block;
+  margin: 0 auto;
 }
 </style>

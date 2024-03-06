@@ -52,23 +52,11 @@
                           />
                           <div class="invalid-feedback">请输入您的密码</div>
                         </div>
-
-                        <div class="col-12">
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              name="remember"
-                              value="true"
-                              id="rememberMe"
-                            />
-                          </div>
-                        </div>
                         <div class="col-12">
                           <b-button
                             @click.prevent="submitForm()"
                             variant="success"
-                            class="btn btn-primary w-100"
+                            class="btn-primary w-100 mt-3"
                             type="submit"
                             >登录
                           </b-button>
@@ -104,6 +92,7 @@ export default {
     return {
       isShowLoginModal: false,
       isShow: false,
+      closeCallback: null, // 关闭时的回调函数
       member: {
         uid: "",
         password: "",
@@ -116,9 +105,14 @@ export default {
   methods: {
     hideModal() {
       this.isShowLoginModal = false;
+      if (this.closeCallback) {
+        this.closeCallback();
+        this.closeCallback = null; // 调用后清除回调，防止重复调用
+      }
     },
-    showModalMethod() {
+    showModalMethod(callback) {
       this.isShowLoginModal = true;
+      this.closeCallback = callback;
     },
     submitForm() {
       const member = this.member;

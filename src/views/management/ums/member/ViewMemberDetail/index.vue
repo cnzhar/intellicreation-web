@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="shadow managementCard-body">
+    <b-card class="shadow">
       <b-container fluid>
         <b-row
           class="my-1"
@@ -18,6 +18,7 @@
               :id="`inputElement-${inputElement.caption}`"
               :type="inputElement.type"
               v-model="inputElement.captionMap[member[inputElement.key]]"
+              class="p-0"
               disabled
               readonly
               plaintext
@@ -27,6 +28,7 @@
               :id="`inputElement-${inputElement.caption}`"
               :type="inputElement.type"
               v-model="member[inputElement.key]"
+              class="p-0"
               disabled
               readonly
               plaintext

@@ -1,6 +1,55 @@
 import request from "@/utils/request";
 
 // *==================================================*
+// *--------------------- Article --------------------*
+// *==================================================*
+/**
+ * 删除文章
+ * @param articleId
+ * @returns {*}
+ */
+export function deleteArticle(articleId) {
+  return request({
+    method: "delete",
+    url: "/articleManagement/deleteArticle/" + articleId,
+    headers: {
+      isToken: true,
+    },
+  });
+}
+
+/**
+ * 获取文章列表
+ * @param query
+ * @returns {*}
+ */
+export function articleList(query) {
+  return request({
+    method: "get",
+    url: "/articleManagement/articleList",
+    headers: {
+      isToken: true,
+    },
+    params: query,
+  });
+}
+
+/**
+ * 获取文章详情
+ * @param articleId
+ * @returns {*}
+ */
+export function getArticle(articleId) {
+  return request({
+    method: "get",
+    url: "/articleManagement/getArticleDetail/" + articleId,
+    headers: {
+      isToken: true,
+    },
+  });
+}
+
+// *==================================================*
 // *-------------------- Category --------------------*
 // *==================================================*
 /**
@@ -54,12 +103,11 @@ export function updateCategory(category) {
  * 查询分类列表
  * @param query
  * @returns {*}
- * @constructor
  */
-export function CategoryList(query) {
+export function categoryList(query) {
   return request({
     method: "get",
-    url: "/articleManagement/CategoryList",
+    url: "/articleManagement/categoryList",
     headers: {
       isToken: true,
     },
